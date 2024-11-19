@@ -19,10 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-//@SpringBootTest(classes = CustomerServiceImpl.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@ActiveProfiles(profiles = "integration")
-//@EnableConfigurationProperties
-//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
 
