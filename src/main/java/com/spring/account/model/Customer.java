@@ -1,9 +1,7 @@
 package com.spring.account.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
@@ -12,6 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "customers")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Customer {
