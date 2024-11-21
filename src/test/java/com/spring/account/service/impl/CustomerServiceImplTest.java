@@ -16,11 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
@@ -155,5 +157,28 @@ class CustomerServiceImplTest {
         assertEquals(new BigDecimal("150.00"), mockCustomer.getBalance());
         verify(customerRepository).findById(customerId);
         verify(customerRepository).save(mockCustomer);
+    }
+
+    @Test
+    @DisplayName("Get All Customers - Throws Exception When No Customers Exist")
+    void givenNoCustomersExist_WhenGetAllCustomers_ThenResourceNotFoundExceptionThrown() {
+        when(customerRepository.findAll()).thenReturn(new ArrayList<>());
+
+        assertThrows(ResourceNotFoundException.class, () -> customerService.getAllCostumers());
+        verify(customerRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Get All Customers - Returns CustomerResponses When Customers Exist")
+    void givenCustomersExist_WhenGetAllCustomers_ThenCustomerResponsesReturned() {
+        List<Customer> mockCustomers = List.of(new Customer(), new Customer());
+        when(customerRepository.findAll()).thenReturn(mockCustomers);
+        when(customerMapper.entityToResponse(any())).thenReturn(new CustomerResponse());
+
+        List<CustomerResponse> result = customerService.getAllCostumers();
+
+        assertEquals(2, result.size());
+        verify(customerRepository).findAll();
+        verify(customerMapper, times(2)).entityToResponse(any());
     }
 }
